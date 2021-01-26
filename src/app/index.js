@@ -1,19 +1,72 @@
+import React from "react";
 import "./index.scss";
 
 import Layout from "./components/Layout";
 import Divider from "./components/Divider";
+import Card from "./components/Card";
+import Button from "./components/Button";
 
-function App() {
-  return (
-    <Layout>
-      <Divider />
-      <section className="main__container">
-        <p>Here goes my content</p>
-        <div className="main__movies"></div>
-        <button className="main__btn">Get More Content</button>
-      </section>
-    </Layout>
-  );
+class App extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      movies: [],
+      favorites: [],
+    };
+  }
+
+  toggleFavorite = (id) => {
+    const { favorites } = this.state;
+    if (favorites.includes(id)) {
+      this.setState({
+        favorites: favorites.filter((favorite) => favorite !== id),
+      });
+    } else {
+      this.setState({ favorites: favorites.concat(id) });
+    }
+  };
+
+  componentDidMount() {
+    fetch("https://academy-video-api.herokuapp.com/content/free-items")
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        this.setState({ movies: data });
+      });
+  }
+
+  render() {
+    console.log(this.state.favorites);
+    const { movies, favorites } = this.state;
+    return (
+      <Layout>
+        <Divider />
+        <section className="main__container">
+          <div className="main__movies">
+            {movies.map((movie) => {
+              if (movies.length < 0) {
+                return <p>Loading...</p>;
+              }
+
+              return (
+                <Card
+                  key={movie.id}
+                  image={movie.image}
+                  title={movie.title}
+                  description={movie.description}
+                  id={movie.id}
+                  toggleFavorite={this.toggleFavorite}
+                  favorites={favorites}
+                />
+              );
+            })}
+          </div>
+          <Button size="large">Get More Content</Button>
+        </section>
+      </Layout>
+    );
+  }
 }
 
 export default App;

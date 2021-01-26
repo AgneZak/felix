@@ -1,3 +1,5 @@
+import "./index.scss";
+
 import Header from "../Header";
 import Footer from "../Footer";
 import Hero from "../Hero";
