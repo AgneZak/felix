@@ -44,28 +44,30 @@ class App extends React.Component {
       <Layout>
         <Hero />
         <Divider />
-        <section className="main__container">
-          <div className="main__movies">
-            {movies.map((movie) => {
-              if (movies.length < 0) {
-                return <p>Loading...</p>;
-              }
+        <article className="content">
+          <section className="content__wrapper">
+            <div className="content__movies">
+              {movies.map((movie) => {
+                if (movies.length < 0) {
+                  return <p>Loading...</p>;
+                }
 
-              return (
-                <Card
-                  key={movie.id}
-                  image={movie.image}
-                  title={movie.title}
-                  description={movie.description}
-                  id={movie.id}
-                  toggleFavorite={this.toggleFavorite}
-                  favorites={favorites}
-                />
-              );
-            })}
-          </div>
-          <Button size="large">Get More Content</Button>
-        </section>
+                return (
+                  <Card
+                    key={movie.id}
+                    image={movie.image}
+                    title={movie.title}
+                    description={movie.description}
+                    id={movie.id}
+                    toggleFavorite={this.toggleFavorite}
+                    favorites={favorites}
+                  />
+                );
+              })}
+            </div>
+            <Button size="large">Get More Content</Button>
+          </section>
+        </article>
       </Layout>
     );
   }
