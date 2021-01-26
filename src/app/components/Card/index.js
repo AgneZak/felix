@@ -17,7 +17,7 @@ function Card({ image, title, description, toggleFavorite, favorites, id }) {
           }}
           isTransperent={favorites.includes(id) ? true : false}
         >
-          {favorites.includes(id) ? "Remove" : "Favorite"}
+          {favorites.includes(id) ? "Remove💔" : "Favorite"}
         </Button>
       </div>
     </div>

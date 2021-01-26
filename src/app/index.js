@@ -2,6 +2,7 @@ import React from "react";
 import "./index.scss";
 
 import Layout from "./components/Layout";
+import Hero from "./components/Hero";
 import Divider from "./components/Divider";
 import Card from "./components/Card";
 import Button from "./components/Button";
@@ -41,6 +42,7 @@ class App extends React.Component {
     const { movies, favorites } = this.state;
     return (
       <Layout>
+        <Hero />
         <Divider />
         <section className="main__container">
           <div className="main__movies">
