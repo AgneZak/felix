@@ -7,7 +7,7 @@ function Header() {
         <header className="header">
             <nav className="nav">
                 <img className="nav__img" src={logo} alt="logo-felix"/>
-                <Button size="large">Sign In</Button>
+                <Button to="/login" size="large">Sign In</Button>
             </nav>
         </header>
     );
