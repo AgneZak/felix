@@ -1,6 +1,10 @@
 import React from "react";
-import Input from "../components/Input";
-import Button from "../components/Button";
+import { withRouter } from "react-router-dom";
+
+import "./index.scss";
+
+import Input from "../../components/Input";
+import Button from "../../components/Button";
 
 class Login extends React.Component {
   constructor() {
@@ -8,11 +12,13 @@ class Login extends React.Component {
     this.state = {
       password: "",
       username: "",
+      error: "",
     };
   }
 
   onSubmit = (e) => {
     const { password, username } = this.state;
+    const { history } = this.props;
 
     e.preventDefault();
 
@@ -30,10 +36,11 @@ class Login extends React.Component {
       .then((data) => {
         console.log(data);
         localStorage.setItem("token", data.token);
-        // history.replace need to do to go to next page
+        history.replace("/movies");
       })
-      .catch((error) => {
-        console.log(error);
+      .catch((e) => {
+        console.log(e);
+        this.setState({ error: "Failure: please check the login details" });
       });
   };
 
@@ -42,28 +49,35 @@ class Login extends React.Component {
   };
 
   render() {
+    const { error } = this.state;
     return (
-      <article className="content">
+      <div className="content">
         <section className="content__wrapper">
-          <h1>here will go login form</h1>
-          <form onSubmit={this.onSubmit}>
+          <form onSubmit={this.onSubmit} className="form">
+            <p className="form__label">Username</p>
             <Input
+              className="form__input"
               type="text"
               placeholder="Username"
               value={this.state.username}
               onChange={(e) => this.handleChange(e, "username")}
             />
+            <p className="form__label">Password</p>
             <Input
+              className="form__input"
               type="password"
               placeholder="Password"
               onChange={(e) => this.handleChange(e, "password")}
             />
-            <Button type="submit">Sign In</Button>
+            {error && <p className="form__error">{error}</p>}
+            <Button type="submit" size="large" className={error ? "" : "form__submit--space"}>
+              Sign In
+            </Button>
           </form>
         </section>
-      </article>
+      </div>
     );
   }
 }
 
-export default Login;
+export default withRouter(Login);
