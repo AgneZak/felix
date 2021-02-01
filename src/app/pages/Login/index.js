@@ -70,7 +70,11 @@ class Login extends React.Component {
               onChange={(e) => this.handleChange(e, "password")}
             />
             {error && <p className="form__error">{error}</p>}
-            <Button type="submit" size="large" className={error ? "" : "form__submit--space"}>
+            <Button
+              type="submit"
+              size="large"
+              className={error ? "" : "form__submit--space"}
+            >
               Sign In
             </Button>
           </form>
