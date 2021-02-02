@@ -9,7 +9,7 @@ import Login from "./pages/Login";
 import Content from "./pages/Content";
 import PrivateRoute from "./components/PrivateRoute";
 import PublicRoute from "./components/PublicRoute";
-
+import SingleContentEntry from "./pages/SingleContentEntry";
 
 class App extends React.Component {
   constructor() {
@@ -47,6 +47,12 @@ class App extends React.Component {
             </Route>
             <PrivateRoute exact path="/movies">
               <Content
+                favorites={favorites}
+                toggleFavorite={this.toggleFavorite}
+              />
+            </PrivateRoute>
+            <PrivateRoute exact path="/movies/:itemId">
+              <SingleContentEntry
                 favorites={favorites}
                 toggleFavorite={this.toggleFavorite}
               />
