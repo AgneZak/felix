@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import useFetch from "../../hooks/useFetch";
 
-import Card from "../../components";
+import { Card } from "../../components";
 
 function Content({ favorites, toggleFavorite }) {
   const fetchOptions = useRef({
