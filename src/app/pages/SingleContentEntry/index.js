@@ -3,8 +3,7 @@ import { useParams } from "react-router-dom";
 
 import "./index.scss";
 import useFetch from "../../hooks/useFetch";
-import Button from "../../components/Button";
-import Modal from "../../components/Modal";
+import { Button, Modal } from "../../components";
 
 function SingleContentEntry({ favorites, toggleFavorite }) {
   const { itemId } = useParams();

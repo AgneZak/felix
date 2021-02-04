@@ -1,22 +1,25 @@
-import Hero from "../components/Hero";
-import Divider from "../components/Divider";
-import Card from "../components/Card";
-import Button from "../components/Button";
-import useFetch from "../hooks/useFetch";
+import { useRef } from "react";
+import useFetch from "../../hooks/useFetch";
 
-function Home({ favorites, toggleFavorite }) {
+import Card from "../../components";
+
+function Content({ favorites, toggleFavorite }) {
+  const fetchOptions = useRef({
+    headers: { authorization: localStorage.getItem("token") },
+  });
+
   const { loading, payload: movies = [] } = useFetch(
-    "https://academy-video-api.herokuapp.com/content/free-items"
+    "https://academy-video-api.herokuapp.com/content/items",
+    fetchOptions.current
   );
 
   return (
     <>
-      <Hero />
-      <Divider />
       <article className="content">
         <section className="content__wrapper">
           <div className="content__movies">
             {loading && <p>Loading...</p>}
+
             {movies.map((movie) => {
               return (
                 <Card
@@ -31,11 +34,10 @@ function Home({ favorites, toggleFavorite }) {
               );
             })}
           </div>
-          <Button size="large">Get More Content</Button>
         </section>
       </article>
     </>
   );
 }
 
-export default Home;
+export default Content;

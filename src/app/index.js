@@ -3,16 +3,11 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import "./index.scss";
 
-import Layout from "./components/Layout";
-import Home from "./pages/Home";
-import Login from "./pages/Login";
-import Content from "./pages/Content";
-import PrivateRoute from "./components/PrivateRoute";
-import PublicRoute from "./components/PublicRoute";
-import SingleContentEntry from "./pages/SingleContentEntry";
+import { Layout, PrivateRoute, PublicRoute } from "./components";
+import { Home, Login, Content, SingleContentEntry } from "./pages";
 
 function App() {
-  const [ favorites, setFavorites ] = useState([]);
+  const [favorites, setFavorites] = useState([]);
 
   const toggleFavorite = (id) => {
     if (favorites.includes(id)) {
@@ -33,10 +28,7 @@ function App() {
             <Login />
           </Route>
           <PrivateRoute exact path="/movies">
-            <Content
-              favorites={favorites}
-              toggleFavorite={toggleFavorite}
-            />
+            <Content favorites={favorites} toggleFavorite={toggleFavorite} />
           </PrivateRoute>
           <PrivateRoute exact path="/movies/:itemId">
             <SingleContentEntry
