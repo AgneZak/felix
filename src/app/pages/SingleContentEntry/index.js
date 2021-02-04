@@ -1,48 +1,29 @@
-import React from "react";
-import { withRouter } from "react-router-dom";
+import { useRef } from "react";
+import { useParams } from "react-router-dom";
 
 import "./index.scss";
-
+import useFetch from "../../hooks/useFetch";
 import Button from "../../components/Button";
 
-class SingleContentEntry extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      movie: [],
-    };
-  }
+function SingleContentEntry({ favorites, toggleFavorite }) {
+  const { itemId } = useParams();
 
-  componentDidMount() {
-    const { itemId } = this.props.match.params;
+  const fetchOptions = useRef({
+    headers: { authorization: localStorage.getItem("token") },
+  });
+  const { loading, payload: movie = [] } = useFetch(
+    `https://academy-video-api.herokuapp.com/content/items/${itemId}`,
+    fetchOptions.current
+  );
 
-    fetch(`https://academy-video-api.herokuapp.com/content/items/${itemId}`, {
-      headers: { authorization: localStorage.getItem("token") },
-    })
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        }
-        throw new Error(response.status);
-      })
-      .then((data) => {
-        console.log(data);
-        this.setState({ movie: data });
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  }
-
-  render() {
-    const { movie } = this.state;
-    const { favorites, toggleFavorite } = this.props;
-
-    console.log(movie);
-    return (
-      <>
-        <article className="content">
-          <section className="content__wrapper">
+  console.log(movie);
+  return (
+    <>
+      <article className="content">
+        <section className="content__wrapper">
+          {loading ? (
+            <p>Loading...</p>
+          ) : (
             <div className="movie">
               <img
                 className="movie__image"
@@ -63,11 +44,11 @@ class SingleContentEntry extends React.Component {
                 <Button>Watch</Button>
               </div>
             </div>
-          </section>
-        </article>
-      </>
-    );
-  }
+          )}
+        </section>
+      </article>
+    </>
+  );
 }
 
-export default withRouter(SingleContentEntry);
+export default SingleContentEntry;

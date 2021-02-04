@@ -7,7 +7,7 @@ import Button from "../../components/Button";
 
 function Login() {
   const [username, setUsername] = useState("");
-  const [password, setPassword] = useState('');
+  const [password, setPassword] = useState("");
   const history = useHistory();
   const [error, setError] = useState("");
 
