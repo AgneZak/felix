@@ -1,9 +1,10 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import "./index.scss";
 import useFetch from "../../hooks/useFetch";
 import Button from "../../components/Button";
+import Modal from "../../components/Modal";
 
 function SingleContentEntry({ favorites, toggleFavorite }) {
   const { itemId } = useParams();
@@ -15,8 +16,10 @@ function SingleContentEntry({ favorites, toggleFavorite }) {
     `https://academy-video-api.herokuapp.com/content/items/${itemId}`,
     fetchOptions.current
   );
+  const [modal, toggleModal] = useState(false);
 
   console.log(movie);
+
   return (
     <>
       <article className="content">
@@ -41,9 +44,22 @@ function SingleContentEntry({ favorites, toggleFavorite }) {
                 >
                   {favorites.includes(movie.id) ? "Remove💔" : "Favorite"}
                 </Button>
-                <Button>Watch</Button>
+                <Button
+                  onClick={() => {
+                    toggleModal(true);
+                  }}
+                >
+                  Watch
+                </Button>
               </div>
             </div>
+          )}
+          {modal && (
+            <Modal
+              toggleModal={toggleModal}
+              id={movie.id}
+              video={movie.video}
+            />
           )}
         </section>
       </article>
