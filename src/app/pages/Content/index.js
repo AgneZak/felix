@@ -1,17 +1,31 @@
 import { useRef } from "react";
+import { connect } from "react-redux";
+
 import useFetch from "../../hooks/useFetch";
 
 import { Card } from "../../components";
 
-function Content({ favorites, toggleFavorite }) {
+function Content({
+  loading,
+  movies,
+  token,
+  onSuccess,
+  onFailure,
+  onStart,
+  favorites,
+  toggleFavorite,
+}) {
   const fetchOptions = useRef({
-    headers: { authorization: localStorage.getItem("token") },
+    headers: { authorization: token },
   });
 
-  const { loading, payload: movies = [] } = useFetch(
-    "https://academy-video-api.herokuapp.com/content/items",
-    fetchOptions.current
-  );
+  useFetch({
+    url: "https://academy-video-api.herokuapp.com/content/items",
+    fetchOptions: fetchOptions.current,
+    onSuccess,
+    onFailure,
+    onStart,
+  });
 
   return (
     <>
@@ -40,4 +54,27 @@ function Content({ favorites, toggleFavorite }) {
   );
 }
 
-export default Content;
+function mapState({ content, auth }) {
+  return {
+    favorites: content.favorites,
+    movies: content.movies.data,
+    loading: content.movies.isLoading,
+    token: auth.token
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    onStart: () => {
+      dispatch({ type: "GET_MOVIES" });
+    },
+    onSuccess: (json) => {
+      dispatch({ type: "GET_MOVIES_SUCCESS", payload: json });
+    },
+    onFailure: (error) => {
+      dispatch({ type: "GET_MOVIES_FAILURE", payload: error });
+    },
+  };
+}
+
+export default connect(mapState, mapDispatchToProps)(Content);

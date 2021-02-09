@@ -1,11 +1,23 @@
-import useFetch from "../../hooks/useFetch";
+import { connect } from "react-redux";
 
+import useFetch from "../../hooks/useFetch";
 import { Hero, Divider, Card, Button } from "../../components";
 
-function Home({ favorites, toggleFavorite }) {
-  const { loading, payload: movies = [] } = useFetch(
-    "https://academy-video-api.herokuapp.com/content/free-items"
-  );
+function Home({
+  loading,
+  movies,
+  onSuccess,
+  onFailure,
+  onStart,
+  favorites,
+  toggleFavorite,
+}) {
+  useFetch({
+    url: "https://academy-video-api.herokuapp.com/content/free-items",
+    onSuccess,
+    onFailure,
+    onStart,
+  });
 
   return (
     <>
@@ -36,4 +48,29 @@ function Home({ favorites, toggleFavorite }) {
   );
 }
 
-export default Home;
+function mapState({ content }) {
+  return {
+    favorites: content.favorites,
+    movies: content.movies.data,
+    loading: content.movies.isLoading,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    onStart: () => {
+      dispatch({ type: "GET_MOVIES" });
+    },
+    onSuccess: (json) => {
+      dispatch({ type: "GET_MOVIES_SUCCESS", payload: json });
+    },
+    onFailure: (error) => {
+      dispatch({ type: "GET_MOVIES_FAILURE", payload: error });
+    },
+    toggleFavorite: (id) => {
+      dispatch({type: "TOGGLE_FAVORITE", payload: id})
+    }
+  };
+}
+
+export default connect(mapState, mapDispatchToProps)(Home);

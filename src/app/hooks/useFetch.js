@@ -1,7 +1,14 @@
 import { useState, useCallback, useEffect } from "react";
 import { useHistory } from "react-router-dom";
+const noop = () => {};
 
-function useFetch(url, fetchOptions) {
+function useFetch({
+  onStart = noop,
+  onSuccess = noop,
+  onFailure = noop,
+  url,
+  fetchOptions,
+}) {
   const [payload, setPayload] = useState();
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -11,6 +18,7 @@ function useFetch(url, fetchOptions) {
     console.log("willFetch");
     try {
       setLoading(true);
+      onStart();
 
       const response = await fetch(url, fetchOptions);
       const json = await response.json();
@@ -29,10 +37,13 @@ function useFetch(url, fetchOptions) {
 
       setPayload(json);
       setLoading(false);
+      onSuccess(json);
     } catch (e) {
       const { message, status } = JSON.parse(e.message);
       console.log(message);
       console.log(status);
+      onFailure(e.message);
+
       setError(message);
       setLoading(false);
 
@@ -41,7 +52,7 @@ function useFetch(url, fetchOptions) {
         history.replace("/login");
       }
     }
-  }, [url, fetchOptions, history]);
+  }, [onStart, onSuccess, onFailure, url, fetchOptions, history]);
 
   useEffect(() => {
     getData();
