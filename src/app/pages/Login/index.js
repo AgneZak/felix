@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
+import { connect } from "react-redux";
 
 import "./index.scss";
 import { Input, Button } from "../../components";
 
-function Login() {
+function Login({ onLogin }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const history = useHistory();
@@ -25,8 +26,7 @@ function Login() {
         throw Error(res.status);
       })
       .then((data) => {
-        console.log(data);
-        localStorage.setItem("token", data.token);
+        onLogin(data.token);
         history.replace("/movies");
       })
       .catch((e) => {
@@ -68,4 +68,13 @@ function Login() {
   );
 }
 
-export default Login;
+
+function mapDispatchToProps(dispatch) {
+  return {
+    onLogin: (token) => {
+      dispatch({ type: "LOGIN_SUCCESS", payload: token });
+    },
+  };
+}
+
+export default connect(null, mapDispatchToProps)(Login);

@@ -74,6 +74,9 @@ function mapDispatchToProps(dispatch) {
     onFailure: (error) => {
       dispatch({ type: "GET_MOVIES_FAILURE", payload: error });
     },
+    toggleFavorite: (id) => {
+      dispatch({type: "TOGGLE_FAVORITE", payload: id})
+    }
   };
 }
 

@@ -30,7 +30,7 @@ function App() {
               <Login />
             </Route>
             <PrivateRoute exact path="/movies">
-              <Content favorites={favorites} toggleFavorite={toggleFavorite} />
+              <Content />
             </PrivateRoute>
             <PrivateRoute exact path="/movies/:itemId">
               <SingleContentEntry
