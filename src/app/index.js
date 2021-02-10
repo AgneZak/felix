@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Provider } from "react-redux";
 
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
@@ -10,15 +9,6 @@ import { Layout, PrivateRoute, PublicRoute } from "./components";
 import { Home, Login, Content, SingleContentEntry } from "./pages";
 
 function App() {
-  const [favorites, setFavorites] = useState([]);
-
-  const toggleFavorite = (id) => {
-    if (favorites.includes(id)) {
-      setFavorites(favorites.filter((favorite) => favorite !== id));
-    } else {
-      setFavorites(favorites.concat(id));
-    }
-  };
 
   return (
     <Provider store={store}>
@@ -33,10 +23,7 @@ function App() {
               <Content />
             </PrivateRoute>
             <PrivateRoute exact path="/movies/:itemId">
-              <SingleContentEntry
-                favorites={favorites}
-                toggleFavorite={toggleFavorite}
-              />
+              <SingleContentEntry />
             </PrivateRoute>
           </Switch>
         </Layout>

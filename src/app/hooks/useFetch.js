@@ -8,6 +8,7 @@ function useFetch({
   onFailure = noop,
   url,
   fetchOptions,
+  condition = true,
 }) {
   const [payload, setPayload] = useState();
   const [error, setError] = useState(null);
@@ -55,8 +56,10 @@ function useFetch({
   }, [onStart, onSuccess, onFailure, url, fetchOptions, history]);
 
   useEffect(() => {
-    getData();
-  }, [getData]);
+    if (condition) {
+      getData();
+    }
+  }, [getData, condition]);
 
   return { payload, error, loading };
 }
