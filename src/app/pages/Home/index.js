@@ -1,5 +1,9 @@
 import { connect } from "react-redux";
 
+import { bindActionCreators } from "redux";
+
+import content from "../../../content";
+
 import useFetch from "../../hooks/useFetch";
 import { Hero, Divider, Card, Button } from "../../components";
 
@@ -48,29 +52,23 @@ function Home({
   );
 }
 
-function mapState({ content }) {
-  return {
-    favorites: content.favorites,
-    movies: content.movies.data,
-    loading: content.movies.isLoading,
-  };
-}
+const enhance = connect(
+  (state) => ({
+    movies: content.selectors.getMovies(state),
+    favorites: content.selectors.getFavorites(state),
+    loading: content.selectors.isLoading(state),
+    token: state.auth.token,
+  }),
+  (dispatch) =>
+    bindActionCreators(
+      {
+        onStart: content.actions.getMovies,
+        onSuccess: content.actions.getMoviesSuccess,
+        onFailure: content.actions.getMoviesFailure,
+        toggleFavorite: content.actions.toggleFavorite,
+      },
+      dispatch
+    )
+);
 
-function mapDispatchToProps(dispatch) {
-  return {
-    onStart: () => {
-      dispatch({ type: "GET_MOVIES" });
-    },
-    onSuccess: (json) => {
-      dispatch({ type: "GET_MOVIES_SUCCESS", payload: json });
-    },
-    onFailure: (error) => {
-      dispatch({ type: "GET_MOVIES_FAILURE", payload: error });
-    },
-    toggleFavorite: (id) => {
-      dispatch({type: "TOGGLE_FAVORITE", payload: id})
-    }
-  };
-}
-
-export default connect(mapState, mapDispatchToProps)(Home);
+export default enhance(Home);
