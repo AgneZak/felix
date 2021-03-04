@@ -45,7 +45,9 @@ function Home({
               );
             })}
           </div>
-          <Button size="large">Get More Content</Button>
+          <Button to="/sign-up/create-user" size="large">
+            Get More Content
+          </Button>
         </section>
       </article>
     </>

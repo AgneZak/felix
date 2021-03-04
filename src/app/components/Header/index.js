@@ -21,6 +21,11 @@ function Header({ onLogout }) {
               Sign In
             </Button>
           </Route>
+          <Route path="/sign-up">
+            <Button to="/login" size="large">
+              Sign In
+            </Button>
+          </Route>
           <Route path="*">
             <Button to="/" size="large" onClick={onLogout}>
               Logout
