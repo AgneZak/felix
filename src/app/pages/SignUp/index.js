@@ -6,46 +6,56 @@ import {
   Redirect,
 } from "react-router-dom";
 
-import { CreateUser, PickPlan } from "./subpages";
+import { useState } from "react";
+
+import "./index.scss";
+
+import { CreateUser, PickPlan, Payment } from "./subpages";
 
 function SignUp() {
   let { path, url } = useRouteMatch();
 
+  const [credentials, setCredentials] = useState({});
+  const [plan, setPlan] = useState(null);
+
   return (
     <div className="content">
-      <ul>
-        <li>
+      <ul className="content__list">
+        <li className="content__list__item">
           <NavLink
             to={`${url}/create-user`}
             activeClassName="selected"
             activeStyle={{
               fontWeight: "bold",
-              color: "red",
+              backgroundColor: "#E50914",
             }}
+            className="content__list__item-text"
           >
             Create User
           </NavLink>
         </li>
-        <li>
+        <li className="content__list__item">
           <NavLink
             activeClassName="selected"
             activeStyle={{
               fontWeight: "bold",
-              color: "red",
+              backgroundColor: "#E50914",
             }}
             to={`${url}/plan`}
+            className="content__list__item-text"
           >
             Pick a Plan
           </NavLink>
         </li>
-        <li>
+        <li className="content__list__item">
           <NavLink
             activeClassName="selected"
             activeStyle={{
               fontWeight: "bold",
-              color: "red",
+              backgroundColor: "#E50914",
             }}
             to={`${url}/payment`}
+            className="content__list__item-text"
           >
             Payment
           </NavLink>
@@ -54,16 +64,13 @@ function SignUp() {
 
       <Switch>
         <Route path={`${path}/create-user`}>
-          <h1>Here goes user info</h1>
-          <CreateUser />
+          <CreateUser setCredentials={setCredentials} />
         </Route>
         <Route path={`${path}/plan`}>
-          <h1>Here goes plan</h1>
-          <PickPlan/>
+          <PickPlan setPlan={setPlan} selectedPlan={plan} />
         </Route>
         <Route path={`${path}/payment`}>
-          <h1>Here goes payment</h1>
-          <form></form>
+          <Payment credentials={credentials} plan={plan} />
         </Route>
         <Redirect to={`${path}/create-user`} />
       </Switch>
